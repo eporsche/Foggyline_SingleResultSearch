@@ -1,0 +1,23 @@
+{
+	"name" : "foggyline/singleresultsearch",
+	"type" : "magento-module",
+	"description" : "Single Result Search",
+	"homepage" : "na",
+	"require" : {
+		"magento-hackathon/magento-composer-installer" : "~2.1.1"
+	},
+	"authors" : [{
+			"name" : "",
+			"email" : ""
+		}
+	],
+	"extra" : {
+		"magento_connect" : {
+			"channel" : "local",
+			"php_min" : "5.3.0",
+			"php_max" : "6.0.0",
+			"stability" : "beta",
+			"summary" : ""
+		}
+	}
+}
