@@ -18,6 +18,11 @@ class Foggyline_SingleResultSearch_Model_Observer {
 
     public function redirectToProductPage($observer) {
 
+    	//check if redirect stop
+    	if (1===(int) $observer->getControllerAction()->getRequest()->getParam('stop')){
+    		return;
+    	}
+    	
         if (!$this->_helper->isModuleOutputEnabled()) {
             return;
         }
@@ -29,13 +34,17 @@ class Foggyline_SingleResultSearch_Model_Observer {
             if ($this->_helper->getMsgShow()) {
                 $msg = $this->_helper->getMsgLabel();
                 $msg = str_replace('[[PRODUCT]]', $products->getFirstItem()->getName(), $msg);
-
-                $message = Mage::getSingleton('core/message')
-                        ->{$this->_helper->getMsgType()}($msg);
-
+                
+                $query = $observer->getControllerAction()->getRequest()->getParam('q');
+                $url = Mage::getUrl('catalogsearch/result/index', array('_query'=>array('q'=>$query,'stop'=>1)));
+                $msg = str_replace('[[QUERY]]',$url, $msg);
+                
+                
+                $message = Mage::getSingleton('core/message')->{$this->_helper->getMsgType()}($msg);
                 Mage::getSingleton('core/session')->addMessage($message);
+                
             }
-
+            
             if ('catalogsearch_result_index' === $observer->getControllerAction()->getFullActionName()) {
                 $params = $observer->getControllerAction()->getRequest()->getParams();
                 header(sprintf('Location: %s?%s', $products->getFirstItem()->getProductUrl(), http_build_query($params)));
